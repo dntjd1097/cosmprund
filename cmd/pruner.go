@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -13,7 +12,7 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 
 	//capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
-	iavltree "github.com/cosmos/iavl"
+
 	packetforwardtypes "github.com/cosmos/ibc-apps/middleware/packet-forward-middleware/v8/packetforward/types"
 	icqtypes "github.com/cosmos/ibc-apps/modules/async-icq/v8/types"
 	icahosttypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/types"
@@ -164,20 +163,6 @@ func pruneAppState(home string) error {
 		return fmt.Errorf("the database has no valid heights to prune, the latest height: %v", latestHeight)
 	}
 
-	var pruningHeights []int64
-	for height := int64(1); height < latestHeight; height++ {
-		if height < latestHeight-int64(versions) {
-			pruningHeights = append(pruningHeights, height)
-		}
-	}
-
-	//pruningHeight := []int64{latestHeight - int64(versions)}
-
-	if len(pruningHeights) == 0 {
-		fmt.Println("no heights to prune")
-		return nil
-	}
-
 	if err = PruneStores(appStore, latestHeight); err != nil {
 		return err
 	}
@@ -204,8 +189,6 @@ func PruneStores(rs *rootmulti.Store, pruningHeight int64) (err error) {
 
 	// Iterate over the map
 	for storeName, storeKey := range storeKeysByName {
-		fmt.Println("pruning store", "key", storeName)
-
 		// Get the store using the store key
 		store := rs.GetCommitKVStore(storeKey)
 
@@ -216,20 +199,11 @@ func PruneStores(rs *rootmulti.Store, pruningHeight int64) (err error) {
 		}
 
 		versions := store.(*iavl.Store).GetAllVersions()
-		fmt.Println("key", storeKey, "versions available", len(versions))
-
 		versionExists := store.(*iavl.Store).VersionExists(int64(versions[0]))
-		fmt.Println("key", storeKey, "last version", versions[0], "exists", versionExists)
+		fmt.Printf("Store %s: %d versions (latest: %d, exists: %v)\n", storeName, len(versions), versions[0], versionExists)
 
-		err := store.(*iavl.Store).DeleteVersionsTo(pruningHeight - 1)
-		if err == nil {
-			continue
-		}
-
-		if errors.Is(err, iavltree.ErrVersionDoesNotExist) {
-			fmt.Println("failed to prune store", "key", storeKey, "err", err, "pruningH", pruningHeight)
-			continue
-		}
+		// No need to check an error here as it just starts async pruning
+		store.(*iavl.Store).DeleteVersionsTo(pruningHeight - 1)
 	}
 
 	return nil

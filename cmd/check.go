@@ -104,7 +104,6 @@ func checkStoreVersions(home string) error {
 		appStore.MountStoreWithDB(value, storetypes.StoreTypeIAVL, nil)
 		appStore.SetIAVLDisableFastNode(true)
 		appStore.SetIAVLDisableAsyncPruning(true)
-	}
 
 	err = appStore.LoadLatestVersion()
 	if err != nil {
@@ -113,16 +112,70 @@ func checkStoreVersions(home string) error {
 
 	storeKeysByName := appStore.StoreKeysByName()
 
+	// Analyze store versions for outliers
+	fmt.Println("\nAnalyzing store versions for outliers...")
+
+	// Collect version statistics
+	type storeStats struct {
+		name         string
+		versionCount int
+		firstVersion int64
+		lastVersion  int64
+		versionGap   int64
+	}
+
+	var stats []storeStats
 	for storeName, storeKey := range storeKeysByName {
 		store := appStore.GetCommitKVStore(storeKey)
-
 		if store.GetStoreType() != types.StoreTypeIAVL {
 			continue
 		}
 
 		versions := store.(*iavl.Store).GetAllVersions()
-		versionExists := store.(*iavl.Store).VersionExists(int64(versions[0]))
-		fmt.Println("key", storeName, "versions available", len(versions), "first version", versions[0], "exists", versionExists, "last version", versions[len(versions)-1])
+		if len(versions) == 0 {
+			continue
+		}
+
+		stats = append(stats, storeStats{
+			name:         storeName,
+			versionCount: len(versions),
+			firstVersion: int64(versions[0]),
+			lastVersion:  int64(versions[len(versions)-1]),
+			versionGap:   int64(versions[len(versions)-1] - versions[0]),
+		})
+	}
+
+	// Calculate average version count
+	var totalVersions int
+	for _, stat := range stats {
+		totalVersions += stat.versionCount
+	}
+	avgVersions := float64(totalVersions) / float64(len(stats))
+
+	// Identify stores with excessive versions (potential pruning issues)
+	fmt.Println("\nStores with potentially excessive versions (may need pruning):")
+	for _, stat := range stats {
+		// Consider stores with more than 1.5x the average versions as potentially problematic
+		if float64(stat.versionCount) > avgVersions*1.5 {
+			fmt.Printf("Store '%s' has %d versions (average: %.2f) - This store may need pruning\n",
+				stat.name, stat.versionCount, avgVersions)
+		}
+	}
+
+	// Identify stores with large version gaps
+	fmt.Println("\nStores with large version gaps (may indicate inconsistent pruning):")
+	var maxGap int64
+	for _, stat := range stats {
+		if stat.versionGap > maxGap {
+			maxGap = stat.versionGap
+		}
+	}
+
+	for _, stat := range stats {
+		if stat.versionGap > int64(float64(maxGap)*0.8) { // Highlight stores with gaps > 80% of max gap
+			fmt.Printf("Store '%s' has a large version gap: %d (from %d to %d) - This may indicate inconsistent pruning\n",
+				stat.name, stat.versionGap, stat.firstVersion, stat.lastVersion)
+		}
 	}
 
 	return nil

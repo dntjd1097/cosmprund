@@ -9,7 +9,7 @@ require (
 	github.com/cometbft/cometbft-db v0.11.0
 	github.com/cosmos/cosmos-sdk v0.50.9
 	github.com/cosmos/gogoproto v1.7.0 // indirect
-	github.com/cosmos/iavl v1.2.4
+	github.com/cosmos/iavl v1.2.4 // indirect
 	github.com/cosmos/ibc-go/v8 v8.5.2
 	github.com/gogo/protobuf v1.3.3 // indirect
 	github.com/neilotoole/errgroup v0.1.5
@@ -179,6 +179,6 @@ replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alp
 
 replace github.com/cosmos/cosmos-sdk => github.com/osmosis-labs/cosmos-sdk v0.50.11-v28-osmo-1
 
-replace github.com/cosmos/iavl => github.com/osmosis-labs/iavl v0.17.3-osmo-v2.0.20250319160658-2193501f4145
+replace github.com/cosmos/iavl => github.com/osmosis-labs/iavl v0.17.3-osmo-v2.0.20250319212949-299e7f345a72
 
 replace cosmossdk.io/store v1.1.1 => github.com/osmosis-labs/cosmos-sdk/store v1.1.1-v0.50.11-v28-osmo-2.0.20250224082327-385bea2c89cf
