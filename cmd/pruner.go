@@ -221,7 +221,7 @@ func PruneStores(rs *rootmulti.Store, pruningHeight int64) (err error) {
 		versionExists := store.(*iavl.Store).VersionExists(int64(versions[0]))
 		fmt.Println("key", storeKey, "last version", versions[0], "exists", versionExists)
 
-		err := store.(*iavl.Store).DeleteVersionsTo(pruningHeight)
+		err := store.(*iavl.Store).DeleteVersionsTo(pruningHeight - 1)
 		if err == nil {
 			continue
 		}

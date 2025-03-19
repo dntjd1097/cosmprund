@@ -103,6 +103,7 @@ func checkStoreVersions(home string) error {
 	for _, value := range keys {
 		appStore.MountStoreWithDB(value, storetypes.StoreTypeIAVL, nil)
 		appStore.SetIAVLDisableFastNode(true)
+		appStore.SetIAVLDisableAsyncPruning(true)
 	}
 
 	err = appStore.LoadLatestVersion()
