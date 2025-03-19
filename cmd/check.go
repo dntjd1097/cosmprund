@@ -37,7 +37,7 @@ import (
 
 func checkStoreVersionCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "check-store-version [path_to_home]",
+		Use:   "check-store-versions [path_to_home]",
 		Short: "check versions available in all stores",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -120,10 +120,8 @@ func checkStoreVersions(home string) error {
 		}
 
 		versions := store.(*iavl.Store).GetAllVersions()
-		fmt.Println("key", storeName, "versions available", len(versions))
-
 		versionExists := store.(*iavl.Store).VersionExists(int64(versions[0]))
-		fmt.Println("key", storeName, "last version", versions[0], "exists", versionExists)
+		fmt.Println("key", storeName, "versions available", len(versions), "first version", versions[0], "exists", versionExists, "last version", versions[len(versions)-1])
 	}
 
 	return nil
