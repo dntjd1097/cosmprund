@@ -42,7 +42,7 @@ import (
 	"github.com/syndtr/goleveldb/leveldb/opt"
 
 	"cosmossdk.io/store/rootmulti"
-	// "github.com/binaryholdings/cosmos-pruner/internal/rootmulti"
+	// "github.com/osmosis-labs/cosmprund/internal/rootmulti"
 )
 
 // load db
@@ -202,7 +202,8 @@ func PruneStores(rs *rootmulti.Store, pruningHeight int64) (err error) {
 		versionExists := store.(*iavl.Store).VersionExists(int64(versions[0]))
 		fmt.Printf("Store %s: %d versions (latest: %d, exists: %v)\n", storeName, len(versions), versions[0], versionExists)
 
-		// No need to check an error here as it just starts async pruning
+		// Start sync pruning because of custom iavl version
+		// go get github.com/osmosis-labs/iavl@7d9bfcc44282cf41bdb68a2c2c89821ee5679244
 		store.(*iavl.Store).DeleteVersionsTo(pruningHeight - 1)
 	}
 

@@ -1,4 +1,4 @@
-module github.com/binaryholdings/cosmos-pruner
+module github.com/osmosis-labs/cosmprund
 
 go 1.21
 
@@ -179,6 +179,6 @@ replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alp
 
 replace github.com/cosmos/cosmos-sdk => github.com/osmosis-labs/cosmos-sdk v0.50.11-v28-osmo-1
 
-replace github.com/cosmos/iavl => github.com/osmosis-labs/iavl v0.17.3-osmo-v2.0.20250319212949-299e7f345a72
+replace github.com/cosmos/iavl => github.com/osmosis-labs/iavl v0.17.3-osmo-v2.0.20250320140236-7d9bfcc44282
 
 replace cosmossdk.io/store v1.1.1 => github.com/osmosis-labs/cosmos-sdk/store v1.1.1-v0.50.11-v28-osmo-2.0.20250224082327-385bea2c89cf
