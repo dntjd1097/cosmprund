@@ -204,7 +204,10 @@ func PruneStores(rs *rootmulti.Store, pruningHeight int64) (err error) {
 
 		// Start sync pruning because of custom iavl version
 		// go get github.com/osmosis-labs/iavl@7d9bfcc44282cf41bdb68a2c2c89821ee5679244
-		store.(*iavl.Store).DeleteVersionsTo(pruningHeight - 1)
+		err := store.(*iavl.Store).DeleteVersionsTo(pruningHeight - 1)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -258,6 +261,7 @@ func pruneTMData(home string) error {
 		if err := blockStoreDB.Compact(nil, nil); err != nil {
 			return err
 		}
+
 		fmt.Println("compacting block store complete")
 
 		return nil
