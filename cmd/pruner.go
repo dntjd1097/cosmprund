@@ -203,8 +203,8 @@ func PruneStores(rs *rootmulti.Store, pruningHeight int64) (err error) {
 		fmt.Printf("Store %s: %d versions (latest: %d, exists: %v)\n", storeName, len(versions), versions[0], versionExists)
 
 		// Start sync pruning because of custom iavl version
-		// go get github.com/osmosis-labs/iavl@7d9bfcc44282cf41bdb68a2c2c89821ee5679244
-		err := store.(*iavl.Store).DeleteVersionsTo(pruningHeight - 1)
+		// go get github.com/osmosis-labs/iavl@08fd812d460bcc95a2c733fdbaa11b53ec16b424
+		err := store.(*iavl.Store).DeleteVersionsTo(pruningHeight - 2)
 		if err != nil {
 			return err
 		}
@@ -269,7 +269,11 @@ func pruneTMData(home string) error {
 
 	fmt.Println("pruning state store")
 	// prune state store
-	err = stateStore.PruneStates(base, pruneHeight, 0)
+	// evidenceThreshold is the height at which evidence is deleted
+	// we need to keep at least 2 weeks of evidence which is roughly 1000000 blocks
+	evidenceThreshold := int64(1000000)
+	// Prune states will prune from base or pruneHeight-evidenceThreshold whichever is lower
+	err = stateStore.PruneStates(base, pruneHeight, pruneHeight-evidenceThreshold)
 	if err != nil {
 		return err
 	}

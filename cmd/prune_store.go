@@ -92,8 +92,8 @@ func pruneSpecificStore(home, storeName string) error {
 	fmt.Printf("Store %s: %d versions (latest: %d, exists: %v)\n", storeName, len(versions), versions[0], versionExists)
 
 	// Start sync pruning because of custom iavl version
-	// go get github.com/osmosis-labs/iavl@7d9bfcc44282cf41bdb68a2c2c89821ee5679244
-	err = iavlStore.DeleteVersionsTo(latestHeight - 1)
+	// go get github.com/osmosis-labs/iavl@08fd812d460bcc95a2c733fdbaa11b53ec16b424
+	err = iavlStore.DeleteVersionsTo(latestHeight - 2)
 	if err != nil {
 		return err
 	}
