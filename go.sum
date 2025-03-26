@@ -641,8 +641,8 @@ github.com/osmosis-labs/cosmos-sdk v0.50.11-v28-osmo-1 h1:MQEf1JrWsiwVmJbM7o8tXa
 github.com/osmosis-labs/cosmos-sdk v0.50.11-v28-osmo-1/go.mod h1:KO0mBgNmkMA+yVkq13GeHWzR2F2iwjkfevywmPUhCVY=
 github.com/osmosis-labs/cosmos-sdk/store v1.1.1-v0.50.11-v28-osmo-2.0.20250224082327-385bea2c89cf h1:/JY+JGIfuCX1pr/LscNMRbk66sUlFxaLULRNsubpFgc=
 github.com/osmosis-labs/cosmos-sdk/store v1.1.1-v0.50.11-v28-osmo-2.0.20250224082327-385bea2c89cf/go.mod h1:YftLCorVLvv0s3xWnHPxb8hAxCP55PTo3RIp6kDHie4=
-github.com/osmosis-labs/iavl v0.17.3-osmo-v2.0.20250320140236-7d9bfcc44282 h1:QbNZb9oDyVHYugtHOC6E12t0hTxQne6WvtpPIEOMHQ0=
-github.com/osmosis-labs/iavl v0.17.3-osmo-v2.0.20250320140236-7d9bfcc44282/go.mod h1:GiM43q0pB+uG53mLxLDzimxM9l/5N9UuSY3/D0huuVw=
+github.com/osmosis-labs/iavl v0.17.3-osmo-v2.0.20250325165142-08fd812d460b h1:CiQoCNTSe+DzSXWWjn2oDrm+0tLxq5N7oy1P7UyPHhI=
+github.com/osmosis-labs/iavl v0.17.3-osmo-v2.0.20250325165142-08fd812d460b/go.mod h1:GiM43q0pB+uG53mLxLDzimxM9l/5N9UuSY3/D0huuVw=
 github.com/pact-foundation/pact-go v1.0.4/go.mod h1:uExwJY4kCzNPcHRj+hCR/HBbOOIwwtUjcrb0b5/5kLM=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pascaldekloe/goe v0.1.0 h1:cBOtyMzM9HTpWjXfbbunk26uA6nG3a8n06Wieeh0MwY=
