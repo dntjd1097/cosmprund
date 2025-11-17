@@ -91,7 +91,7 @@ func NewRootCmd() *cobra.Command {
 	}
 
 	// --disable-fast-node flag
-	rootCmd.PersistentFlags().BoolVar(&disableFastNode, "disable-fast-node", false, "disable IAVL fast node for faster pruning (default: false, fast node enabled)")
+	rootCmd.PersistentFlags().BoolVar(&disableFastNode, "disable-fast-node", true, "disable IAVL fast node for faster pruning (default: false, fast node enabled)")
 	if err := viper.BindPFlag("disable-fast-node", rootCmd.PersistentFlags().Lookup("disable-fast-node")); err != nil {
 		panic(err)
 	}
