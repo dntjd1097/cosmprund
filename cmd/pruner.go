@@ -86,33 +86,8 @@ func pruneAppState(home string) error {
 
 	dbDir := rootify(dataDir, home)
 
-	// LevelDB optimization options for pruning performance
 	o := opt.Options{
-		// DisableSeeksCompaction: Disable automatic compaction triggered by seek operations
-		// Improves write performance as pruning involves heavy delete operations
 		DisableSeeksCompaction: true,
-
-		// === Speed optimizations ===
-		// Increase write buffer to reduce compaction frequency (default 4MB -> 128MB)
-		WriteBuffer: 128 * 1024 * 1024,
-
-		// Increase block size for better I/O efficiency (default 4KB -> 32KB)
-		BlockSize: 32 * 1024,
-
-		// Increase compaction table size to reduce compaction frequency (default 2MB -> 16MB)
-		CompactionTableSize: 16 * 1024 * 1024,
-
-		// Increase total size multiplier to reduce number of levels (default 10)
-		CompactionTotalSizeMultiplier: 8.0,
-
-		// Increase open file limit for better performance
-		OpenFilesCacheCapacity: 2000,
-
-		// Block cache for faster reads
-		BlockCacheCapacity: 64 * 1024 * 1024, // 64MB cache
-
-		// === Compression (Snappy - fast and efficient) ===
-		Compression: opt.SnappyCompression,
 	}
 
 	// Get BlockStore
@@ -228,33 +203,8 @@ func pruneTMData(home string) error {
 
 	dbDir := rootify(dataDir, home)
 
-	// LevelDB optimization options for pruning performance
 	o := opt.Options{
-		// DisableSeeksCompaction: Disable automatic compaction triggered by seek operations
-		// Improves write performance as pruning involves heavy delete operations
 		DisableSeeksCompaction: true,
-
-		// === Speed optimizations ===
-		// Increase write buffer to reduce compaction frequency (default 4MB -> 128MB)
-		WriteBuffer: 128 * 1024 * 1024,
-
-		// Increase block size for better I/O efficiency (default 4KB -> 32KB)
-		BlockSize: 32 * 1024,
-
-		// Increase compaction table size to reduce compaction frequency (default 2MB -> 16MB)
-		CompactionTableSize: 16 * 1024 * 1024,
-
-		// Increase total size multiplier to reduce number of levels (default 10)
-		CompactionTotalSizeMultiplier: 8.0,
-
-		// Increase open file limit for better performance
-		OpenFilesCacheCapacity: 2000,
-
-		// Block cache for faster reads
-		BlockCacheCapacity: 64 * 1024 * 1024, // 64MB cache
-
-		// === Compression (Snappy - fast and efficient) ===
-		Compression: opt.SnappyCompression,
 	}
 
 	// Get BlockStore
